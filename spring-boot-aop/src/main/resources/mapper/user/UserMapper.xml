@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.aop.user.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="com.example.aop.user.entity.User">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <id column="name" property="name" jdbcType="VARCHAR"/>
+        <id column="age" property="age" jdbcType="INTEGER"/>
+        <id column="email" property="email" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="selectAllColumns">
+		id,name,age,email
+	</sql>
+    <insert id="addUser" useGeneratedKeys="true" keyProperty="id">
+		insert into user (
+			name,age,email
+		) values(
+			#{user.name,jdbcType=VARCHAR},#{user.age,jdbcType=INTEGER},#{user.email,jdbcType=VARCHAR}
+		)
+	</insert>
+    <delete id="deleteUserById" parameterType="java.lang.String">
+		delete from user where id=#{id}
+	</delete>
+
+    <select id="getUserByName" resultMap="BaseResultMap">
+        select <include refid="selectAllColumns"/>
+        from user where name=#{name}
+    </select>
+    <update id="updateUserById" parameterType="com.example.aop.user.entity.User">
+        update user set
+        name =#{user.name},
+        age = #{user.age},
+        email = #{user.email}
+        where id = #{user.id}
+    </update>
+</mapper>
